@@ -17,7 +17,11 @@ class Game extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.target}>{this.target}</Text>
-        <RandomNumber number={this.randomNumber}/>
+        <View style={styles.randomContainer}>
+          {this.randomNumber.map((number, index) => (
+            <RandomNumber number={number} />
+          ))}
+        </View>
       </View>
     );
   }
@@ -26,12 +30,20 @@ class Game extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ddd',
-    margin: 40,
-  
+    flex: 1,
+    paddingTop: 40,
   },
   target: {
-    fontSize: 30,
+    fontSize: 40,
+    backgroundColor: '#aaa',
+    margin: 50,
     textAlign: 'center',
+  },
+  randomContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
 });
 export default Game;

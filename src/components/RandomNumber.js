@@ -14,9 +14,14 @@ class RandomNumber extends Component {
     );
   }
 }
-const styles = StyleSheet.create({randomNumber:{
-    // flex:1,
-    backgroundColor:"#666",
-    
-}});
+const styles = StyleSheet.create({
+  randomNumber: {
+    fontSize: 30,
+    backgroundColor: '#999',
+    width: 100,
+    marginHorizontal: 15,
+    marginVertical: 25,
+    textAlign: 'center',
+  },
+});
 export default RandomNumber;
