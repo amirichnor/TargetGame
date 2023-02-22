@@ -3,23 +3,31 @@ import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-  }
-  state = {};
+  state = {selectedNumber: [0, 4]};
+
   randomNumber = Array.from({length: this.props.randomNumber}).map(
     () => 1 + Math.floor(10 * Math.random()),
   );
+
   target = this.randomNumber
     .slice(0, this.props.randomNumber - 2)
     .reduce((acc, curr) => acc + curr, 0);
+
+  isSelected = numberIndex => {
+    return this.state.selectedNumber.indexOf(numberIndex) >= 0;
+  };
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.target}>{this.target}</Text>
         <View style={styles.randomContainer}>
           {this.randomNumber.map((number, index) => (
-            <RandomNumber number={number} />
+            <RandomNumber
+              key={index}
+              isSelected={this.isSelected(index)}
+              selectedNumber={this.state.selectedNumber}
+              number={number}
+            />
           ))}
         </View>
       </View>

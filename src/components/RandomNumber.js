@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {Component} from 'react';
 
 class RandomNumber extends Component {
@@ -6,11 +6,14 @@ class RandomNumber extends Component {
     super(props);
   }
   state = {};
+  handlePress=()=>{
+    console.log('hello')
+  }
   render() {
     return (
-      <View>
-        <Text style={styles.randomNumber}>{this.props.number}</Text>
-      </View>
+      <TouchableOpacity onPress={this.handlePress}>
+        <Text style={[styles.randomNumber,this.props.isSelected&&styles.selected]}>{this.props.number}</Text>
+      </TouchableOpacity>
     );
   }
 }
@@ -23,5 +26,8 @@ const styles = StyleSheet.create({
     marginVertical: 25,
     textAlign: 'center',
   },
+  selected:{
+    opacity:0.3
+  }
 });
 export default RandomNumber;
