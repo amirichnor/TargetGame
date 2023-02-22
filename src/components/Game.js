@@ -17,33 +17,36 @@ class Game extends Component {
     return this.state.selectedIds.indexOf(numberIndex) >= 0;
   };
 
-  selectNumber = (numberIndex) => {
-    this.setState((prevState) => ({
+  selectNumber = numberIndex => {
+    this.setState(prevState => ({
       selectedIds: [...prevState.selectedIds, numberIndex],
     }));
   };
 
-  gameStatus=()=>{
-    const sumSelected=this.state.selectedIds.reduce((acc,curr)=>{
-        return acc+this.randomNumber[curr]
-    },0)
-    
-   if(sumSelected>this.target) {return "Lose"}
-   if(sumSelected===this.target) return "Win"
-   if(sumSelected<this.target) return "Playing"
-   
-  }
+  gameStatus = () => {
+    const sumSelected = this.state.selectedIds.reduce((acc, curr) => {
+      return acc + this.randomNumber[curr];
+    }, 0);
+
+    if (sumSelected > this.target) {
+      return 'Lost';
+    }
+    if (sumSelected === this.target) return 'Won';
+    if (sumSelected < this.target) return 'Playing';
+  };
   render() {
-    const gameStatus=this.gameStatus()
+    const gameStatus = this.gameStatus();
     return (
       <View style={styles.container}>
-        <Text style={styles.target}>{this.target}</Text>
+        <Text style={[styles.target, styles[`Status_${gameStatus}`]]}>
+          {this.target}
+        </Text>
         <View style={styles.randomContainer}>
           {this.randomNumber.map((number, index) => (
             <RandomNumber
               key={index}
               id={index}
-              isDisabled={this.isSelected(index)}
+              isDisabled={this.isSelected(index) || gameStatus !== 'Playing'}
               number={number}
               onPress={this.selectNumber}
             />
@@ -57,7 +60,6 @@ class Game extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ddd',
     flex: 1,
     paddingTop: 40,
   },
@@ -72,6 +74,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+  },
+  Status_Playing: {
+    backgroundColor: '#ddd',
+  },
+  Status_Lost: {
+    backgroundColor: 'red',
+  },
+  Status_Won: {
+    backgroundColor: 'green',
   },
 });
 export default Game;
