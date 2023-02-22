@@ -8,7 +8,7 @@ class App extends Component {
   state = {};
   render() {
     return (
-     <Game randomNumber={6}/>
+     <Game randomNumber={6} initialSecond={10}/>
     );
   }
 }

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
 
 class Game extends Component {
-  state = {selectedIds: []};
+  state = {selectedIds: [], remainingSecond: this.props.initialSecond};
 
   randomNumber = Array.from({length: this.props.randomNumber}).map(
     () => 1 + Math.floor(10 * Math.random()),
@@ -13,6 +13,24 @@ class Game extends Component {
     .slice(0, this.props.randomNumber - 2)
     .reduce((acc, curr) => acc + curr, 0);
 
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      this.setState(
+        prevState => {
+          return {remainingSecond: prevState.remainingSecond - 1};
+        },
+        () => {
+          if (this.state.remainingSecond === 0) {
+            clearInterval(this.intervalId);
+          }
+        },
+      );
+    }, 1000);
+  }
+
+  componentWillUnmount(nextProps, nextState) {
+    clearInterval(this.intervalId);
+  }
   isSelected = numberIndex => {
     return this.state.selectedIds.indexOf(numberIndex) >= 0;
   };
@@ -27,12 +45,14 @@ class Game extends Component {
     const sumSelected = this.state.selectedIds.reduce((acc, curr) => {
       return acc + this.randomNumber[curr];
     }, 0);
-
+if(this.state.remainingSecond===0){
+  return 'LOST'
+}
     if (sumSelected > this.target) {
-      return 'Lost';
+      return 'LOST';
     }
-    if (sumSelected === this.target) return 'Won';
-    if (sumSelected < this.target) return 'Playing';
+    if (sumSelected === this.target) return 'WON';
+    if (sumSelected < this.target) return 'PLAYING';
   };
   render() {
     const gameStatus = this.gameStatus();
@@ -46,13 +66,13 @@ class Game extends Component {
             <RandomNumber
               key={index}
               id={index}
-              isDisabled={this.isSelected(index) || gameStatus !== 'Playing'}
+              isDisabled={this.isSelected(index) || gameStatus !== 'PLAYING'}
               number={number}
               onPress={this.selectNumber}
             />
           ))}
         </View>
-        <Text>{gameStatus}</Text>
+        <Text style={{margin: 40}}>{this.state.remainingSecond}</Text>
       </View>
     );
   }
@@ -75,13 +95,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
-  Status_Playing: {
+  Status_PLAYING: {
     backgroundColor: '#ddd',
   },
-  Status_Lost: {
+  Status_LOST: {
     backgroundColor: 'red',
   },
-  Status_Won: {
+  Status_WON: {
     backgroundColor: 'green',
   },
 });
