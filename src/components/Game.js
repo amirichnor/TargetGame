@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
 
 class Game extends Component {
-  state = {selectedNumber: [0, 4]};
+  state = {selectedNumber: []};
 
   randomNumber = Array.from({length: this.props.randomNumber}).map(
     () => 1 + Math.floor(10 * Math.random()),
@@ -16,6 +16,12 @@ class Game extends Component {
   isSelected = numberIndex => {
     return this.state.selectedNumber.indexOf(numberIndex) >= 0;
   };
+
+  selectNumber = (numberIndex) => {
+    this.setState((prevState) => ({
+      selectedNumber: [...prevState.selectedNumber, numberIndex],
+    }));
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -24,9 +30,10 @@ class Game extends Component {
           {this.randomNumber.map((number, index) => (
             <RandomNumber
               key={index}
-              isSelected={this.isSelected(index)}
-              selectedNumber={this.state.selectedNumber}
+              id={index}
+              isDisabled={this.isSelected(index)}
               number={number}
+              onPress={this.selectNumber}
             />
           ))}
         </View>

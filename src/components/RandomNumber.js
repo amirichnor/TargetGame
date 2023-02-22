@@ -6,13 +6,20 @@ class RandomNumber extends Component {
     super(props);
   }
   state = {};
-  handlePress=()=>{
-    console.log('hello')
-  }
+  handlePress = () => {
+    if (this.props.isDisabled) return{}
+    this.props.onPress(this.props.id);
+  };
   render() {
     return (
       <TouchableOpacity onPress={this.handlePress}>
-        <Text style={[styles.randomNumber,this.props.isSelected&&styles.selected]}>{this.props.number}</Text>
+        <Text
+          style={[
+            styles.randomNumber,
+            this.props.isDisabled && styles.selected,
+          ]}>
+          {this.props.number}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -26,8 +33,8 @@ const styles = StyleSheet.create({
     marginVertical: 25,
     textAlign: 'center',
   },
-  selected:{
-    opacity:0.3
-  }
+  selected: {
+    opacity: 0.3,
+  },
 });
 export default RandomNumber;
