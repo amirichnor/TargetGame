@@ -2,9 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {Component} from 'react';
 
 class RandomNumber extends Component {
-  constructor(props) {
-    super(props);
-  }
+ 
   state = {};
   handlePress = () => {
     if (this.props.isDisabled) return{}

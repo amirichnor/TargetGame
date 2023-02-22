@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
 
 class Game extends Component {
-  state = {selectedNumber: []};
+  state = {selectedIds: []};
 
   randomNumber = Array.from({length: this.props.randomNumber}).map(
     () => 1 + Math.floor(10 * Math.random()),
@@ -14,15 +14,27 @@ class Game extends Component {
     .reduce((acc, curr) => acc + curr, 0);
 
   isSelected = numberIndex => {
-    return this.state.selectedNumber.indexOf(numberIndex) >= 0;
+    return this.state.selectedIds.indexOf(numberIndex) >= 0;
   };
 
   selectNumber = (numberIndex) => {
     this.setState((prevState) => ({
-      selectedNumber: [...prevState.selectedNumber, numberIndex],
+      selectedIds: [...prevState.selectedIds, numberIndex],
     }));
   };
+
+  gameStatus=()=>{
+    const sumSelected=this.state.selectedIds.reduce((acc,curr)=>{
+        return acc+this.randomNumber[curr]
+    },0)
+    
+   if(sumSelected>this.target) {return "Lose"}
+   if(sumSelected===this.target) return "Win"
+   if(sumSelected<this.target) return "Playing"
+   
+  }
   render() {
+    const gameStatus=this.gameStatus()
     return (
       <View style={styles.container}>
         <Text style={styles.target}>{this.target}</Text>
@@ -37,6 +49,7 @@ class Game extends Component {
             />
           ))}
         </View>
+        <Text>{gameStatus}</Text>
       </View>
     );
   }
