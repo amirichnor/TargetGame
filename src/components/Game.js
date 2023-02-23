@@ -1,7 +1,7 @@
 import {Button, StyleSheet, Text, View} from 'react-native';
 import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
-import shuffle from 'lodash.shuffle'
+import shuffle from 'lodash.shuffle';
 class Game extends Component {
   state = {selectedIds: [], remainingSecond: this.props.initialSecond};
 
@@ -14,7 +14,7 @@ class Game extends Component {
   target = this.randomNumber
     .slice(0, this.props.randomNumber - 2)
     .reduce((acc, curr) => acc + curr, 0);
-    shuffleRandomNumbers=shuffle(this.randomNumber);
+  shuffleRandomNumbers = shuffle(this.randomNumber);
 
   componentDidMount() {
     this.intervalId = setInterval(() => {
@@ -49,7 +49,6 @@ class Game extends Component {
       nextState.selectedIds !== this.state.selectedIds ||
       nextState.remainingSecond === 0
     ) {
-     
       this.gameStatus = this.calcGameStatus(nextState);
       if (this.gameStatus !== 'PLAYING') {
         clearInterval(this.intervalId);
@@ -89,7 +88,9 @@ class Game extends Component {
             />
           ))}
         </View>
-        <Button title='Play Again'/>
+        {gameStatus !== 'PLAYING' && (
+          <Button title="Play Again" onPress={this.props.onPlayAgain} />
+        )}
         <Text style={{margin: 40}}>{this.state.remainingSecond}</Text>
       </View>
     );
