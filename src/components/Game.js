@@ -1,7 +1,7 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React, {Component} from 'react';
 import RandomNumber from './RandomNumber';
-
+import shuffle from 'lodash.shuffle'
 class Game extends Component {
   state = {selectedIds: [], remainingSecond: this.props.initialSecond};
 
@@ -9,9 +9,12 @@ class Game extends Component {
     () => 1 + Math.floor(10 * Math.random()),
   );
 
+  gameStatus = 'PLAYING';
+
   target = this.randomNumber
     .slice(0, this.props.randomNumber - 2)
     .reduce((acc, curr) => acc + curr, 0);
+    shuffleRandomNumbers=shuffle(this.randomNumber);
 
   componentDidMount() {
     this.intervalId = setInterval(() => {
@@ -40,14 +43,27 @@ class Game extends Component {
       selectedIds: [...prevState.selectedIds, numberIndex],
     }));
   };
-
-  gameStatus = () => {
-    const sumSelected = this.state.selectedIds.reduce((acc, curr) => {
-      return acc + this.randomNumber[curr];
+  //WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+  componentWillUpdate(nextProps, nextState) {
+    if (
+      nextState.selectedIds !== this.state.selectedIds ||
+      nextState.remainingSecond === 0
+    ) {
+     
+      this.gameStatus = this.calcGameStatus(nextState);
+      if (this.gameStatus !== 'PLAYING') {
+        clearInterval(this.intervalId);
+      }
+    }
+  }
+  calcGameStatus = nextState => {
+    const sumSelected = nextState.selectedIds.reduce((acc, curr) => {
+      return acc + this.shuffleRandomNumbers[curr];
     }, 0);
-if(this.state.remainingSecond===0){
-  return 'LOST'
-}
+
+    if (nextState.remainingSecond === 0) {
+      return 'LOST';
+    }
     if (sumSelected > this.target) {
       return 'LOST';
     }
@@ -55,14 +71,15 @@ if(this.state.remainingSecond===0){
     if (sumSelected < this.target) return 'PLAYING';
   };
   render() {
-    const gameStatus = this.gameStatus();
+    const gameStatus = this.gameStatus;
+
     return (
       <View style={styles.container}>
         <Text style={[styles.target, styles[`Status_${gameStatus}`]]}>
           {this.target}
         </Text>
         <View style={styles.randomContainer}>
-          {this.randomNumber.map((number, index) => (
+          {this.shuffleRandomNumbers.map((number, index) => (
             <RandomNumber
               key={index}
               id={index}
@@ -72,6 +89,7 @@ if(this.state.remainingSecond===0){
             />
           ))}
         </View>
+        <Button title='Play Again'/>
         <Text style={{margin: 40}}>{this.state.remainingSecond}</Text>
       </View>
     );
