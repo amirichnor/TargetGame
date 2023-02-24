@@ -1,5 +1,5 @@
 # TargetSum - A React Native Game
-Sum It Up is an addictive game that challenges players to quickly calculate the sum of random numbers. Built using React Native, this project involved generating and manipulating random data, utilizing lifecycle methods to manage the game state, and implementing a timer to increase the level of difficulty.
+This project is a game that challenges players to quickly calculate the sum of random numbers. Built using React Native, this project involved generating and manipulating random data, utilizing lifecycle methods to manage the game state, and implementing a timer to increase the level of difficulty.
 
 To ensure optimal performance and a seamless user experience, caching was used to store computable values and component remounting was implemented to reset the game. Through this project, I honed my skills in React Native, lifecycle management, and performance optimization, gaining valuable insights into creating engaging and user-friendly applications.
 
@@ -15,7 +15,7 @@ To get started with TargetSum, simply clone the repository and install the neces
 
 Some basic Git commands are:
 ```
-git clone https://github.com/<username>/<repository-name>.git
+git clone https://github.com/amirichnor/TargetGame.git
 npm install
 ract-native run-ios
 ```
